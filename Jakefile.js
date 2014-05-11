@@ -1,7 +1,7 @@
 /*global desc, task, jake, fail, complet */
 "use strict";
 
-task("default", ["lint"]);
+task("default", ["lint", "test"]);
 
 desc("Lint everything");
 task ("lint", [], function()
@@ -15,4 +15,10 @@ task ("lint", [], function()
     };
 
     lint.validateFileList(list.toArray(), options, {});
+});
+
+desc("Test everything");
+task("test", [], function(){
+    var reporter = require("nodeunit").reporters.default;
+    reporter.run(['test']);
 });
