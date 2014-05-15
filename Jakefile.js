@@ -1,4 +1,4 @@
-/*global desc, task, jake, fail, complet */
+/*global desc, task, jake, fail, complete */
 "use strict";
 
 task("default", ["lint", "test"]);
@@ -20,5 +20,11 @@ task ("lint", [], function()
 desc("Test everything");
 task("test", [], function(){
     var reporter = require("nodeunit").reporters.default;
-    reporter.run(['src/server']);
-});
+    reporter.run(['src/server/_server_tests.js'], null, function(failures){
+        if ( failures)
+            fail('tests fails');
+        
+        console.log("tests done");
+        complete();
+    });
+}, {async: false});
