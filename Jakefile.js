@@ -23,7 +23,7 @@ task("test", [], function(){
     reporter.run(['src/server/_server_tests.js'], null, function(failures){
         if ( failures)
             fail('tests fails');
-        
+
         console.log("tests done");
         complete();
     });
