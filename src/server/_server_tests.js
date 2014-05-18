@@ -5,19 +5,25 @@ var http  = require("http");
 
 exports.tearDown = function(cb){
     server.stop(function(){
-        console.log("stop callback");
     });
     cb();
 };
 
-exports.testHttpServerResponseToGetRequest = function(test)
-{
+exports.test_serverReturnHelloWorld = function(test){
     server.start();
 
-    http.get("http://localhost:8080", function(response){
-        console.log("Got response");
-        response.on("data", function(){});
-        test.done();
+    var request = http.get("http://localhost:8080");
+    request.on("response", function(response){
+        var recievedData = false;
+        response.setEncoding("utf-8");
+        response.on("data", function(chunk){
+            recievedData = true;
+            test.equals("Hello world", chunk, "response text");
+        });
+        response.on("end", function(){
+            test.equals(200, response.statusCode, "status code");
+            test.ok(recievedData, "data received");
+            test.done();
+        });
     });
 };
-
